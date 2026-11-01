@@ -1,4 +1,4 @@
-# Mi práctica #2 de Estructuras de Datos - Ordenamiento de un dataset grande (C++)
+# Mi práctica #2 de Estructuras de Datos - Ordenar un dataset grande
 Por Nash Díaz
 
 Ordena alfabéticamente las 100.000 palabras de `data/dataset.txt` con tres estrategias implementadas desde cero (sin `std::sort` ni contenedores ordenados de la librería estándar) y compara su tiempo y memoria.
