@@ -12,7 +12,7 @@
 #include "../src/quicksort.hpp"
 #include "../src/utilidades.hpp"
 
-
+using std::string;
 using std::vector;
 
 static int fallos = 0, pruebas = 0;
