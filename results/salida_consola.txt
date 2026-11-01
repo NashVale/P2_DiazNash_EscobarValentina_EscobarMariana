@@ -1,1 +1,171 @@
+==============================================================================
+  ORDENAMIENTO DE UN DATASET GRANDE - QuickSort / HeapSort / AVL
+==============================================================================
+  Dataset           : data/dataset.txt
+  Palabras leidas   : 100.000
+  sizeof(string)    : 32 bytes   (capacidad SSO: 15 caracteres)
+  Palabras > SSO    : 3.030 (su texto va en un bloque aparte del heap: 0.05 MB)
+  Repeticiones      : 5
+  Compilador        : g++ 13.3.0
 
+  Ejecutando QuickSort...
+  Ejecutando HeapSort...
+  Ejecutando Arbol AVL...
+  Ejecutando HeapSort in situ (extra)...
+
+==============================================================================
+  QuickSort
+==============================================================================
+  Estructura : Arreglo dinamico std::vector<std::string>
+  Big O      : tiempo O(n log n) prom. / O(n^2) peor | espacio O(log n) extra (in situ)
+------------------------------------------------------------------------------
+  Tiempo (5 repeticiones): media 34.81 ms | desv. 0.42 ms | min 34.17 ms | max 35.21 ms
+  Memoria total estimada (sizeof) : 3.10 MB
+  Memoria EXTRA estimada          : 0.00 MB
+  Memoria EXTRA medida (new/del)  : 0.00 MB  (30 bytes)
+------------------------------------------------------------------------------
+  Comparaciones                   : 2.383.082
+  Intercambios                    : 418.889
+  Rondas de particion             : 99.999
+  Profundidad max. de recursion   : 13  (log2 n = 16.6)
+  Comparaciones / (n log2 n)      : 1.435
+------------------------------------------------------------------------------
+  Verificacion: ordenado = SI | mismas palabras que la entrada = SI
+  Primeras: a aahing aaliis aaronite aarrgh 
+  Ultimas : zymotize zyryan zythum zyzomys zyzzogeton 
+
+==============================================================================
+  HeapSort
+==============================================================================
+  Estructura : Monticulo binario (min-heap) en arreglo + lista de salida
+  Big O      : tiempo O(n log n) en todos los casos | espacio O(n) extra (lista de salida)
+------------------------------------------------------------------------------
+  Tiempo (5 repeticiones): media 68.91 ms | desv. 1.70 ms | min 66.70 ms | max 71.04 ms
+      - Construir heap (Floyd): 4.64 ms
+      - Extraer n minimos: 64.27 ms
+  Memoria total estimada (sizeof) : 6.16 MB
+  Memoria EXTRA estimada          : 3.05 MB
+  Memoria EXTRA medida (new/del)  : 3.05 MB  (3.200.000 bytes)
+------------------------------------------------------------------------------
+  Altura del heap                 : 16  (floor(log2 n))
+  Propiedad de heap verificada    : SI
+  Comparaciones al construir      : 187.865  (<= 2n = 200.000)
+  Comparaciones totales           : 3.019.694
+  Intercambios totales            : 1.474.758
+  Comparaciones / (n log2 n)      : 1.818
+------------------------------------------------------------------------------
+  Verificacion: ordenado = SI | mismas palabras que la entrada = SI
+  Primeras: a aahing aaliis aaronite aarrgh 
+  Ultimas : zymotize zyryan zythum zyzomys zyzzogeton 
+
+==============================================================================
+  Arbol AVL
+==============================================================================
+  Estructura : Arbol AVL (nodos enlazados) + lista por recorrido inorden
+  Big O      : tiempo O(n log n) en todos los casos | espacio O(n) extra (nodos + lista)
+------------------------------------------------------------------------------
+  Tiempo (5 repeticiones): media 56.66 ms | desv. 2.47 ms | min 53.90 ms | max 60.41 ms
+      - Insertar n palabras: 50.11 ms
+      - Recorrido inorden -> lista: 6.54 ms
+  Memoria total estimada (sizeof) : 8.50 MB
+  Memoria EXTRA estimada          : 8.44 MB
+  Memoria EXTRA medida (new/del)  : 8.44 MB  (8.854.576 bytes)
+------------------------------------------------------------------------------
+  Nodos creados                   : 100.000
+  sizeof(Nodo)                    : 56 bytes  (string 32 + 2 punteros + 2 int)
+  Altura del arbol                : 20  (minima posible 17, cota AVL 1.44*log2 n = 23.9)
+  Propiedades AVL verificadas     : SI (orden BST + balance + alturas)
+  Comparaciones                   : 1.545.925
+  Rotaciones simples              : 23.309
+  Rotaciones dobles               : 23.177
+  Comparaciones / (n log2 n)      : 0.931
+------------------------------------------------------------------------------
+  Verificacion: ordenado = SI | mismas palabras que la entrada = SI
+  Primeras: a aahing aaliis aaronite aarrgh 
+  Ultimas : zymotize zyryan zythum zyzomys zyzzogeton 
+
+==============================================================================
+  HeapSort in situ (extra)
+==============================================================================
+  Estructura : Max-heap dentro del mismo std::vector
+  Big O      : tiempo O(n log n) en todos los casos | espacio O(1) extra
+------------------------------------------------------------------------------
+  Tiempo (5 repeticiones): media 70.75 ms | desv. 4.13 ms | min 66.78 ms | max 75.67 ms
+  Memoria total estimada (sizeof) : 3.10 MB
+  Memoria EXTRA estimada          : 0.00 MB
+  Memoria EXTRA medida (new/del)  : 0.00 MB  (0 bytes)
+------------------------------------------------------------------------------
+  Comparaciones                   : 3.019.433
+  Intercambios                    : 1.575.183
+------------------------------------------------------------------------------
+  Verificacion: ordenado = SI | mismas palabras que la entrada = SI
+  Primeras: a aahing aaliis aaronite aarrgh 
+  Ultimas : zymotize zyryan zythum zyzomys zyzzogeton 
+
+==============================================================================
+  ANALISIS COMPARATIVO
+==============================================================================
+  Estrategia                  Media(ms)  Desv(ms)  vs mejor  Extra est.  Extra medida
+------------------------------------------------------------------------------
+  QuickSort                       34.81      0.42     1.00x     0.00 MB       0.00 MB
+  HeapSort                        68.91      1.70     1.98x     3.05 MB       3.05 MB
+  Arbol AVL                       56.66      2.47     1.63x     8.44 MB       8.44 MB
+  HeapSort in situ (extra)        70.75      4.13     2.03x     0.00 MB       0.00 MB
+------------------------------------------------------------------------------
+  Complejidad teorica:
+   - QuickSort: tiempo O(n log n) prom. / O(n^2) peor; espacio O(log n) extra (in situ)
+   - HeapSort: tiempo O(n log n) en todos los casos; espacio O(n) extra (lista de salida)
+   - Arbol AVL: tiempo O(n log n) en todos los casos; espacio O(n) extra (nodos + lista)
+   - HeapSort in situ (extra): tiempo O(n log n) en todos los casos; espacio O(1) extra
+------------------------------------------------------------------------------
+  Todas las salidas ordenadas y completas : SI
+  Las salidas son identicas entre si      : SI
+
+  Archivos guardados en 'results/': resultados.csv y ordenado_*.txt
+
+==============================================================================
+  EXPERIMENTO: ESCALABILIDAD (minimo de 5 repeticiones por punto)
+==============================================================================
+  Si el tiempo crece como n log n, la columna t/(n log2 n) debe ser casi constante.
+  Se usa el MINIMO de las repeticiones: el ruido externo (otros procesos) solo
+  puede sumar tiempo, asi que el minimo es la medida mas fiel del algoritmo.
+
+        n   Quick(ms)  Heap(ms)   AVL(ms)  | ns por (n log2 n): Quick   Heap    AVL
+------------------------------------------------------------------------------
+    10000       2.87      4.60      2.87  |                    21.59  34.59  21.61
+    20000       6.16     10.34      6.47  |                    21.57  36.18  22.63
+    30000       9.72     16.27     11.41  |                    21.80  36.47  25.57
+    40000      12.94     22.37     16.18  |                    21.17  36.58  26.47
+    50000      16.56     28.31     21.70  |                    21.21  36.27  27.80
+    60000      20.22     34.68     27.40  |                    21.23  36.42  28.77
+    70000      23.72     42.14     33.34  |                    21.06  37.40  29.59
+    80000      27.14     48.93     39.93  |                    20.83  37.55  30.64
+    90000      30.89     56.15     45.98  |                    20.85  37.91  31.04
+   100000      34.98     66.45     55.07  |                    21.06  40.01  33.16
+
+  Guardado en 'results/escalabilidad.csv'
+
+==============================================================================
+  EXPERIMENTO: TIPO DE ENTRADA (n = 100.000, 5 repeticiones)
+==============================================================================
+  Entrada                            Quick(ms)  Heap(ms)   AVL(ms)   Rotaciones AVL
+------------------------------------------------------------------------------
+  Aleatoria                             34.58     65.19     54.84         46.486
+  Ya ordenada                           10.68     52.05     20.14         99.983
+  Orden inverso                         12.66     51.78     20.76         99.983
+  Muchos repetidos (100 distintas)      25.60     49.54      6.26             44
+
+  Importancia del pivote (n = 20.000):
+  Pivote / entrada                     Tiempo(ms)   Comparaciones   Prof. recursion
+------------------------------------------------------------------------------
+  Mediana de 3 / aleatoria                  6.74         410.880                11
+  Mediana de 3 / ya ordenada                2.70         367.228                15
+  Primer elemento / aleatoria               5.98         438.648                11
+  Primer elemento / ya ordenada           762.45     200.029.998                 2
+
+  Con pivote = primero y entrada ordenada, cada particion deja 0 y n-1
+  elementos: ~n^2/2 comparaciones (peor caso O(n^2)). La mediana de tres
+  lo evita. Gracias a la recursion sobre la parte pequena, la pila no se
+  desborda ni en ese peor caso.
+
+  Guardado en 'results/casos_entrada.csv'

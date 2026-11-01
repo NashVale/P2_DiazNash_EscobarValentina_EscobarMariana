@@ -1,0 +1,11 @@
+entrada,quicksort_ms,heapsort_ms,avl_ms,avl_rotaciones
+Aleatoria,34.576,65.191,54.845,46486
+Ya ordenada,10.683,52.050,20.145,99983
+Orden inverso,12.655,51.775,20.763,99983
+Muchos repetidos (100 distintas),25.596,49.538,6.258,44
+
+pivote_entrada,n,ms,comparaciones,profundidad
+Mediana de 3 / aleatoria,20000,6.742,410880,11
+Mediana de 3 / ya ordenada,20000,2.704,367228,15
+Primer elemento / aleatoria,20000,5.978,438648,11
+Primer elemento / ya ordenada,20000,762.452,200029998,2
