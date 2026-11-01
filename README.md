@@ -1,9 +1,6 @@
-# Ordenamiento de un dataset grande en C++
 
-**ST0245 – Estructuras de Datos y Algoritmos · Universidad EAFIT**
-Práctica: *Sorting Large Dataset (C++)*
-
-Integrante: _(tu nombre completo)_
+# Práctica 2 de Estructuras de Datos - Ordenamiento de un dataset
+Por Nash Díaz Quessep 
 
 El programa ordena alfabéticamente 100.000 palabras con tres estrategias, cada una basada en una estructura de datos distinta, y compara su desempeño real:
 
