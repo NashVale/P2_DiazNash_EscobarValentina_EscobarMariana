@@ -1,8 +1,7 @@
 // utilidades.hpp
-// ---------------------------------------------------------------------------
 // Funciones de apoyo: lectura del dataset, verificacion de resultados,
 // estadisticas de tiempo y estimacion de memoria con sizeof.
-// ---------------------------------------------------------------------------
+
 #pragma once
 #include <chrono>
 #include <cmath>
@@ -17,10 +16,7 @@
 
 namespace util {
 
-// --- Lectura ----------------------------------------------------------------
-// Lee una palabra por linea. Quita el '\r' final: el dataset del profesor
-// viene con finales de linea de Windows (\r\n) y, sin esto, en Linux/macOS
-// cada palabra quedaria con un caracter invisible al final.
+
 inline std::vector<std::string> leerPalabras(const std::string& ruta) {
     std::ifstream in(ruta);
     if (!in) throw std::runtime_error("No se pudo abrir el archivo: " + ruta);
@@ -45,16 +41,14 @@ inline void escribirPalabras(const std::string& ruta, const std::vector<std::str
     for (const auto& s : v) out << s << '\n';
 }
 
-// --- Verificacion -----------------------------------------------------------
+// Verificación 
 inline bool estaOrdenado(const std::vector<std::string>& v) {
     for (std::size_t i = 1; i < v.size(); ++i)
         if (v[i] < v[i - 1]) return false;
     return true;
 }
 
-// Verifica que 'salida' tenga exactamente las mismas palabras (con las mismas
-// repeticiones) que 'entrada'. Usa una tabla hash: O(n) y NO depende de
-// ningun ordenamiento, asi la verificacion es independiente de los algoritmos.
+
 inline bool esPermutacion(const std::vector<std::string>& entrada,
                           const std::vector<std::string>& salida) {
     if (entrada.size() != salida.size()) return false;
@@ -68,7 +62,7 @@ inline bool esPermutacion(const std::vector<std::string>& entrada,
     return true;
 }
 
-// --- Tiempo -----------------------------------------------------------------
+// Tiempo 
 using Reloj = std::chrono::steady_clock;  // monotono: no lo afectan cambios de hora
 
 inline double msDesde(Reloj::time_point t0, Reloj::time_point t1) {
@@ -95,11 +89,7 @@ inline Resumen resumir(const std::vector<double>& xs) {
     return r;
 }
 
-// --- Memoria (estimacion con sizeof) ---------------------------------------
-// Un std::string guarda los textos cortos DENTRO del propio objeto (Small
-// String Optimization, SSO). Solo los textos mas largos que esa capacidad
-// usan un bloque extra en el heap. Capacidad SSO tipica: 15 caracteres en
-// GCC y MSVC, 22 en Clang/libc++.
+}
 inline std::size_t capacidadSSO() { return std::string().capacity(); }
 
 inline std::size_t bytesTextoExterno(const std::vector<std::string>& v) {
@@ -117,7 +107,7 @@ inline std::size_t cuantasLargas(const std::vector<std::string>& v) {
     return c;
 }
 
-// --- Formato ---------------------------------------------------------------
+//  Formato 
 inline std::string mb(std::size_t bytes) {
     std::ostringstream o;
     o << std::fixed << std::setprecision(2) << bytes / (1024.0 * 1024.0) << " MB";
@@ -141,4 +131,4 @@ inline std::string fijo(double x, int dec = 2) {
     return o.str();
 }
 
-}  // namespace util
+}  
