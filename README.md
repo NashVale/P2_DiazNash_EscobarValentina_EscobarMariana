@@ -62,4 +62,4 @@ n = 100.000, media de 5 repeticiones:
 | Árbol AVL | 56,7 ms | 8,44 MB |
 | HeapSort | 68,9 ms | 3,05 MB |
 
-Los tiempos dependen de la máquina. Es un README bastante general ya que el análisis completo está en el 
+Los tiempos dependen de la máquina. Es un README bastante general ya que el análisis completo está en el informe.
