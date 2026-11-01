@@ -1,27 +1,5 @@
 // avl.hpp
-// ---------------------------------------------------------------------------
-// C) Arbol AVL implementado desde cero.
-//
-// Un AVL es un arbol binario de busqueda (BST) donde, en TODO nodo, la
-// diferencia de alturas entre el subarbol izquierdo y el derecho (factor de
-// balance) es -1, 0 o +1. Eso garantiza altura O(log n) (como maximo
-// ~1.44 * log2(n)), y por tanto insertar cuesta O(log n) siempre, sin
-// importar el orden de llegada de los datos.
-//
-// Proceso pedido por el enunciado:
-//   1. Insertar las 100.000 palabras en el arbol.      n * O(log n)
-//   2. Recorrido INORDEN (izq, raiz, der).             O(n)
-//   3. Guardar el resultado en una lista.             -> lista ordenada
-//
-// Cuando una insercion desbalancea un nodo (factor +-2) hay 4 casos:
-//   Izq-Izq  -> rotacion simple a la derecha
-//   Der-Der  -> rotacion simple a la izquierda
-//   Izq-Der  -> doble: izquierda en el hijo, luego derecha en el nodo
-//   Der-Izq  -> doble: derecha en el hijo, luego izquierda en el nodo
-//
-// Palabras repetidas: se guarda un contador en el nodo en lugar de crear
-// otro nodo; en el inorden la palabra se escribe "cuenta" veces.
-// ---------------------------------------------------------------------------
+
 #pragma once
 #include <algorithm>
 #include <cstddef>
@@ -39,8 +17,8 @@ struct EstadisticasAVL {
 class ArbolAVL {
     struct Nodo {
         std::string clave;
-        int altura = 1;          // altura del subarbol (hoja = 1)
-        int cuenta = 1;          // repeticiones de la palabra
+        int altura = 1;          
+        int cuenta = 1;          
         Nodo* izq = nullptr;
         Nodo* der = nullptr;
         explicit Nodo(std::string&& k) : clave(std::move(k)) {}
@@ -50,7 +28,7 @@ public:
     explicit ArbolAVL(EstadisticasAVL& e) : est_(e) {}
     ~ArbolAVL() { destruir(raiz_); }
 
-    ArbolAVL(const ArbolAVL&) = delete;             // no se copia el arbol
+    ArbolAVL(const ArbolAVL&) = delete;             
     ArbolAVL& operator=(const ArbolAVL&) = delete;
 
     void insertar(const std::string& palabra) {
@@ -61,14 +39,14 @@ public:
         raiz_ = insertar(raiz_, std::move(palabra));
     }
 
-    // Recorrido inorden: agrega las palabras en orden alfabetico a 'salida'.
+    
     void inorden(std::vector<std::string>& salida) const { inorden(raiz_, salida); }
 
     std::size_t nodos() const { return nodos_; }
     std::size_t elementos() const { return elementos_; }
     int altura() const { return h(raiz_); }
 
-    // Comprueba orden BST + balance AVL + alturas en todo el arbol.
+    
     bool esValido() const {
         bool ok = true;
         validar(raiz_, nullptr, nullptr, ok);
@@ -89,16 +67,12 @@ private:
         n->altura = 1 + std::max(h(n->izq), h(n->der));
     }
 
-    //        y                 x
-    //       / \               / \          .
-    //      x   C    --->     A   y
-    //     / \                   / \        .
-    //    A   B                 B   C
+  
     static Nodo* rotarDerecha(Nodo* y) {
         Nodo* x = y->izq;
         y->izq = x->der;
         x->der = y;
-        actualizarAltura(y);   // primero y (ahora esta abajo)
+        actualizarAltura(y);   
         actualizarAltura(x);
         return x;
     }
@@ -132,11 +106,11 @@ private:
             }
             return rotarIzquierda(n);
         }
-        return n;                             // ya estaba balanceado
+        return n;                             
     }
 
-    // Insercion recursiva: baja como en un BST y, al regresar, actualiza
-    // alturas y rebalancea cada ancestro. Devuelve la nueva raiz del subarbol.
+    // Inserción recursiva: baja como en un BST y, al regresar, actualiza
+    // Alturas y rebalancea cada ancestro. Devuelve la nueva raíz del subarbol.
     Nodo* insertar(Nodo* n, std::string&& palabra) {
         if (n == nullptr) {
             ++nodos_;
@@ -150,7 +124,7 @@ private:
         } else if (c > 0) {
             n->der = insertar(n->der, std::move(palabra));
         } else {
-            ++n->cuenta;          // repetida: no cambia la forma del arbol
+            ++n->cuenta;          
             ++elementos_;
             return n;
         }
