@@ -1,24 +1,7 @@
 // generar_dataset.cpp
-// ---------------------------------------------------------------------------
 // Crea dataset.txt con N palabras elegidas al azar de words_alpha.txt.
-//
-// words_alpha.txt viene ordenado alfabeticamente; si lo usaramos tal cual,
-// todos los algoritmos recibirian su "mejor/peor caso" en lugar de un caso
-// tipico. Por eso se toma una muestra aleatoria y se desordena.
-//
-// Algoritmo: Fisher-Yates PARCIAL. Para i = 0..N-1 se elige j al azar en
-// [i, total) y se intercambian palabras[i] y palabras[j]. Las primeras N
-// posiciones quedan como una muestra aleatoria uniforme y sin repeticiones.
-// Costo O(total) para leer + O(N) para mezclar.
-//
-// Se usa std::mt19937 con SEMILLA FIJA y una funcion propia para el numero
-// aleatorio en un rango (std::uniform_int_distribution puede dar resultados
-// distintos en cada compilador). Asi, misma semilla => mismo dataset en
-// Windows, Linux o macOS: el experimento es reproducible.
-//
-// Uso:
-//   generar_dataset words_alpha.txt data/dataset.txt [N=100000] [semilla=2026]
-// ---------------------------------------------------------------------------
+// Uso: generar_dataset words_alpha.txt data/dataset.txt [N=100000] [semilla=2026]
+
 #include <cstdint>
 #include <fstream>
 #include <iostream>
