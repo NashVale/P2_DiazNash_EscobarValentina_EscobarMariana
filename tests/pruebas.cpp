@@ -119,3 +119,4 @@ int main() {
     std::cout << (fallos == 0 ? "TODAS LAS PRUEBAS PASARON\n" : "HAY PRUEBAS FALLIDAS\n");
     return fallos == 0 ? 0 : 1;
 
+}
