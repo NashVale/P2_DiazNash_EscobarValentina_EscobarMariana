@@ -1,4 +1,4 @@
-# Mi práctica #2 de Estructuras de Datos - Ordenamiento un dataset grande
+# Mi práctica #2 de Estructuras de Datos - Ordenamiento de un dataset grande
 Por Nash Díaz
 
 El programa ordena alfabéticamente las 100.000 palabras de `data/dataset.txt` con tres estrategias implementadas desde cero (sin `std::sort` ni contenedores ordenados de la librería estándar) y compara su tiempo y memoria.
@@ -62,4 +62,4 @@ n = 100.000, media de 5 repeticiones:
 | Árbol AVL | 56,7 ms | 8,44 MB |
 | HeapSort | 68,9 ms | 3,05 MB |
 
-Los tiempos dependen de la máquina. Es un README bastante general ya que el análisis completo está en en el informe.
+Los tiempos dependen de la máquina. Es un README bastante general ya que el análisis completo está en el informe.
