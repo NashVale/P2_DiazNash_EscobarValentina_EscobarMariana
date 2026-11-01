@@ -1,1 +1,16 @@
+# Ejecutables
+ordenador
+ordenador.exe
+pruebas
+pruebas.exe
+generar_dataset
+generar_dataset.exe
+*.o
+*.obj
+*.pdb
+*.ilk
 
+# IDE
+.vscode/
+.idea/
+cmake-build-*/
