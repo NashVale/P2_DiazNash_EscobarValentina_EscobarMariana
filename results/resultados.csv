@@ -1,5 +1,5 @@
 estrategia,n,repeticiones,media_ms,desviacion_ms,min_ms,max_ms,mem_total_estimada_bytes,mem_extra_estimada_bytes,mem_extra_medida_bytes,ordenado,permutacion
-QuickSort,100000,5,34.808,0.420,34.174,35.205,3254576,0,30,si,si
-HeapSort,100000,5,68.909,1.698,66.702,71.040,6454576,3200000,3200000,si,si
-Arbol AVL,100000,5,56.656,2.472,53.898,60.408,8909152,8854576,8854576,si,si
-HeapSort in situ (extra),100000,5,70.755,4.127,66.776,75.671,3254576,0,0,si,si
+QuickSort,100000,5,32.526,0.221,32.354,32.905,3254576,0,30,si,si
+HeapSort,100000,5,48.989,0.330,48.642,49.330,6454576,3200000,3200000,si,si
+Arbol AVL,100000,5,47.720,4.962,44.472,56.498,8909152,8854576,8854576,si,si
+HeapSort in situ (extra),100000,5,51.698,1.999,50.322,55.101,3254576,0,0,si,si
