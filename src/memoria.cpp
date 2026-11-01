@@ -54,4 +54,4 @@ void operator delete[](void* p) noexcept { liberar(p); }
 void operator delete(void* p, std::size_t) noexcept { liberar(p); }
 void operator delete[](void* p, std::size_t) noexcept { liberar(p); }
 void operator delete(void* p, const std::nothrow_t&) noexcept { liberar(p); }
-void operator delete[](void* p, const std::nothrow_t&) noexcept { liberar(p); 
+void operator delete[](void* p, const std::nothrow_t&) noexcept { liberar(p); }
