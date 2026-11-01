@@ -1,15 +1,6 @@
 // memoria.cpp
-// ---------------------------------------------------------------------------
-// Reemplazo de los operadores globales new/delete para contar memoria.
-//
-// Truco: por cada bloque pedimos CABECERA bytes extra al inicio y ahi
-// guardamos el tamano solicitado. Al liberar, retrocedemos CABECERA bytes,
-// leemos el tamano y lo restamos del contador. La cabecera mide
-// alignof(std::max_align_t) (normalmente 16) para que el puntero que
-// devolvemos siga correctamente alineado para cualquier tipo.
-//
-// El programa es de un solo hilo, por eso los contadores no son atomicos.
-// ---------------------------------------------------------------------------
+// Reemplaza new/delete y guarda el tamaño en una cabecera para contar memoria. 
+
 #include "memoria.hpp"
 
 #include <cstdlib>
@@ -40,16 +31,16 @@ void liberar(void* p) noexcept {
     std::free(bloque);
 }
 
-}  // namespace
+}  
 
 namespace memoria {
 std::size_t actual() { return g_actual; }
 std::size_t pico() { return g_pico; }
 void reiniciarPico() { g_pico = g_actual; }
 std::size_t asignaciones() { return g_asignaciones; }
-}  // namespace memoria
+}  
 
-// --- Operadores globales reemplazados -------------------------------------
+// Operadores reemplazados
 void* operator new(std::size_t n) { return reservar(n); }
 void* operator new[](std::size_t n) { return reservar(n); }
 void* operator new(std::size_t n, const std::nothrow_t&) noexcept {
