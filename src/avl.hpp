@@ -157,4 +157,4 @@ private:
         if (n->altura != 1 + std::max(hi, hd)) ok = false;
         return 1 + std::max(hi, hd);
     }
-};
+}
