@@ -129,7 +129,15 @@ inline void hundirMax(std::vector<std::string>& a, std::size_t i,
     }
 }
 
-
+inline void ordenarInSitu(std::vector<std::string>& a, EstadisticasHeap& e) {
+    const std::size_t n = a.size();
+    if (n < 2) return;
+    for (std::size_t i = n / 2; i-- > 0;) hundirMax(a, i, n, e);  
+    for (std::size_t fin = n - 1; fin > 0; --fin) {
+        std::swap(a[0], a[fin]); 
+        ++e.intercambios;
+        hundirMax(a, 0, fin, e);  
+    }
 }
 
 } 
