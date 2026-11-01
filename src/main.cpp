@@ -1,26 +1,5 @@
 // main.cpp
-// ---------------------------------------------------------------------------
-// Practica: ordenamiento de un dataset grande de palabras (C++)
-// ST0245 - Estructuras de Datos y Algoritmos - Universidad EAFIT
-//
-// Estrategias:
-//   A) QuickSort sobre std::vector<std::string>           (quicksort.hpp)
-//   B) HeapSort con un monticulo binario                    (heapsort.hpp)
-//   C) Arbol AVL + recorrido inorden                        (avl.hpp)
-//   +  Extra: HeapSort in situ (para comparar memoria)
-//
-// Para cada estrategia se mide tiempo (std::chrono, varias repeticiones),
-// memoria (estimada con sizeof y medida con el contador de new/delete) y se
-// verifica que el resultado este ordenado y contenga las mismas palabras.
-//
-// Uso:
-//   ordenador                      -> menu interactivo (para la sustentacion)
-//   ordenador --todo               -> corre todo sin preguntar
-//   ordenador --dataset ruta --reps 5 --salida results
-//
-// NOTA: los mensajes no llevan tildes a proposito, para que se vean bien en
-// la consola de Windows (que no siempre usa UTF-8).
-// ---------------------------------------------------------------------------
+
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -44,9 +23,9 @@ using std::size_t;
 using std::string;
 using std::vector;
 
-// ===========================================================================
-// Configuracion y resultados
-// ===========================================================================
+
+// Configuración y resultados
+
 struct Config {
     string dataset = "data/dataset.txt";
     string carpetaSalida = "results";
@@ -55,13 +34,13 @@ struct Config {
 
 struct Resultado {
     string nombre;
-    string archivo;                   // nombre corto para archivos de salida
+    string archivo;                   
     string estructura;
     string bigOTiempo, bigOEspacio;
-    vector<double> tiempos;           // ms por repeticion
-    vector<std::pair<string, double>> fases;   // tiempo medio por fase (ms)
-    size_t memTotalEstimada = 0;      // estructura completa (sizeof)
-    size_t memExtraEstimada = 0;      // lo que el algoritmo agrega a la entrada
+    vector<double> tiempos;           
+    vector<std::pair<string, double>> fases;   
+    size_t memTotalEstimada = 0;      
+    size_t memExtraEstimada = 0;     
     size_t memExtraMedida = 0;        // pico real medido con new/delete
     vector<std::pair<string, string>> detalles;
     bool ordenado = false;
@@ -71,9 +50,9 @@ struct Resultado {
 
 static string linea(char c = '-', int n = 78) { return string(n, c); }
 
-// ===========================================================================
+
 // A) QuickSort
-// ===========================================================================
+
 static Resultado correrQuick(const vector<string>& datos, int reps) {
     Resultado r;
     r.nombre = "QuickSort";
@@ -94,7 +73,7 @@ static Resultado correrQuick(const vector<string>& datos, int reps) {
         const auto t1 = util::Reloj::now();
 
         // Se lee el pico ANTES de guardar el tiempo: push_back puede reservar
-        // memoria y esa reserva es del programa de medicion, no del algoritmo.
+        // memoria y esa reserva es del programa de medición, no del algoritmo.
         r.memExtraMedida = std::max(r.memExtraMedida, memoria::pico() - base);
         r.tiempos.push_back(util::msDesde(t0, t1));
         if (k == reps - 1) { ult = e; r.salida = std::move(v); }
@@ -103,7 +82,7 @@ static Resultado correrQuick(const vector<string>& datos, int reps) {
     const size_t n = datos.size(), S = sizeof(string);
     const size_t ext = util::bytesTextoExterno(datos);
     r.memTotalEstimada = n * S + ext;
-    r.memExtraEstimada = 0;   // in situ; solo pila de recursion y la copia del pivote
+    r.memExtraEstimada = 0;   // in situ; solo pila de recursión y la copia del pivote
     r.detalles = {
         {"Comparaciones", util::conMiles(ult.comparaciones)},
         {"Intercambios", util::conMiles(ult.intercambios)},
@@ -117,9 +96,9 @@ static Resultado correrQuick(const vector<string>& datos, int reps) {
     return r;
 }
 
-// ===========================================================================
-// B) HeapSort con monticulo binario (version del enunciado: heap -> lista)
-// ===========================================================================
+
+// B) HeapSort con montículo binario (versión del enunciado: heap -> lista)
+
 static Resultado correrHeap(const vector<string>& datos, int reps) {
     Resultado r;
     r.nombre = "HeapSort";
@@ -143,7 +122,7 @@ static Resultado correrHeap(const vector<string>& datos, int reps) {
         const auto t0 = util::Reloj::now();
         MonticuloBinarioMin h(std::move(copia), e);       // Floyd, O(n)
         const auto t1 = util::Reloj::now();
-        if (k == reps - 1) {                               // fuera de la medicion
+        if (k == reps - 1) {                               // fuera de la medición
             eConstruir = e;
             alturaHeap = h.altura();
             heapValido = h.esValido();
@@ -165,8 +144,8 @@ static Resultado correrHeap(const vector<string>& datos, int reps) {
 
     const size_t n = datos.size(), S = sizeof(string);
     const size_t ext = util::bytesTextoExterno(datos);
-    r.memTotalEstimada = 2 * n * S + ext;  // arreglo del heap + lista de salida
-    r.memExtraEstimada = n * S;            // la lista de salida (el heap reusa la entrada)
+    r.memTotalEstimada = 2 * n * S + ext;  
+    r.memExtraEstimada = n * S;            
     r.detalles = {
         {"Altura del heap", std::to_string(alturaHeap) + "  (floor(log2 n))"},
         {"Propiedad de heap verificada", heapValido ? "SI" : "NO"},
@@ -180,9 +159,9 @@ static Resultado correrHeap(const vector<string>& datos, int reps) {
     return r;
 }
 
-// ===========================================================================
+
 // Extra: HeapSort in situ (max-heap dentro del mismo arreglo)
-// ===========================================================================
+
 static Resultado correrHeapInSitu(const vector<string>& datos, int reps) {
     Resultado r;
     r.nombre = "HeapSort in situ (extra)";
@@ -214,9 +193,8 @@ static Resultado correrHeapInSitu(const vector<string>& datos, int reps) {
     return r;
 }
 
-// ===========================================================================
-// C) Arbol AVL + recorrido inorden
-// ===========================================================================
+
+// C) Árbol AVL + recorrido inorden
 static Resultado correrAVL(const vector<string>& datos, int reps) {
     Resultado r;
     r.nombre = "Arbol AVL";
@@ -240,10 +218,10 @@ static Resultado correrAVL(const vector<string>& datos, int reps) {
         {
             const auto t0 = util::Reloj::now();
             ArbolAVL arbol(e);
-            for (auto& s : copia) arbol.insertar(std::move(s));  // 1. insertar
+            for (auto& s : copia) arbol.insertar(std::move(s));  
             const auto t1 = util::Reloj::now();
             salida.reserve(arbol.elementos());
-            arbol.inorden(salida);                               // 2-3. inorden -> lista
+            arbol.inorden(salida);                               
             const auto t2 = util::Reloj::now();
 
             const double f1 = util::msDesde(t0, t1), f2 = util::msDesde(t1, t2);
@@ -255,9 +233,9 @@ static Resultado correrAVL(const vector<string>& datos, int reps) {
                 ult = e;
                 altura = arbol.altura();
                 nodos = arbol.nodos();
-                valido = arbol.esValido();   // fuera de la medicion de tiempo
+                valido = arbol.esValido();   // fuera de la medición de tiempo
             }
-        }   // aqui se destruye el arbol (no entra en el tiempo)
+        }   // acá se destruye el árbol (no entra en el tiempo)
         if (k == reps - 1) r.salida = std::move(salida);
     }
     r.fases = {{"Insertar n palabras", tInsertar / reps},
@@ -266,7 +244,7 @@ static Resultado correrAVL(const vector<string>& datos, int reps) {
     const size_t n = datos.size(), S = sizeof(string), N = ArbolAVL::bytesPorNodo();
     const size_t ext = util::bytesTextoExterno(datos);
     const double lg = std::log2(static_cast<double>(n));
-    r.memTotalEstimada = n * N + n * S + 2 * ext;  // nodos + lista (texto largo 2 veces)
+    r.memTotalEstimada = n * N + n * S + 2 * ext;  // nodos + lista 
     r.memExtraEstimada = n * N + n * S + ext;      // las claves se movieron a los nodos
     r.detalles = {
         {"Nodos creados", util::conMiles(nodos)},
@@ -284,9 +262,9 @@ static Resultado correrAVL(const vector<string>& datos, int reps) {
     return r;
 }
 
-// ===========================================================================
-// Presentacion de resultados
-// ===========================================================================
+
+// Presentación de los resultados
+
 static void verificar(Resultado& r, const vector<string>& datos) {
     r.ordenado = util::estaOrdenado(r.salida);
     r.permutacion = util::esPermutacion(datos, r.salida);
@@ -381,14 +359,14 @@ static void guardarResultados(const vector<Resultado>& rs, const Config& cfg, si
          << "/': resultados.csv y ordenado_*.txt\n";
 }
 
-// ===========================================================================
+
 // Experimento extra 1: escalabilidad (n = 10.000 ... 100.000)
-// ===========================================================================
+
 static void experimentoEscalabilidad(const vector<string>& datos, const Config& cfg) {
     cout << "\n" << linea('=') << "\n  EXPERIMENTO: ESCALABILIDAD (minimo de " << cfg.repeticiones << " repeticiones por punto)\n"
          << linea('=') << "\n";
     cout << "  Si el tiempo crece como n log n, la columna t/(n log2 n) debe ser casi constante.\n"
-         << "  Se usa el MINIMO de las repeticiones: el ruido externo (otros procesos) solo\n"
+         << "  Se usa el MÍNIMO de las repeticiones: el ruido externo (otros procesos) solo\n"
          << "  puede sumar tiempo, asi que el minimo es la medida mas fiel del algoritmo.\n\n";
     cout << "        n   Quick(ms)  Heap(ms)   AVL(ms)  | ns por (n log2 n): Quick   Heap    AVL\n";
     cout << linea() << "\n";
@@ -425,14 +403,13 @@ static void experimentoEscalabilidad(const vector<string>& datos, const Config& 
     cout << "\n  Guardado en '" << cfg.carpetaSalida << "/escalabilidad.csv'\n";
 }
 
-// ===========================================================================
+
 // Experimento extra 2: casos especiales de entrada
-// ===========================================================================
 static void experimentoCasos(const vector<string>& datos, const Config& cfg) {
     cout << "\n" << linea('=') << "\n  EXPERIMENTO: TIPO DE ENTRADA (n = " << util::conMiles(datos.size())
          << ", " << cfg.repeticiones << " repeticiones)\n" << linea('=') << "\n";
 
-    // Entradas de prueba. La version ordenada se obtiene con NUESTRO QuickSort.
+    // Entradas de prueba. La versión ordenada se obtiene con NUESTRO QuickSort.
     vector<string> ordenada = datos;
     { EstadisticasQuick e; quick::ordenar(ordenada, e); }
     vector<string> inversa(ordenada.rbegin(), ordenada.rend());
@@ -478,7 +455,7 @@ static void experimentoCasos(const vector<string>& datos, const Config& cfg) {
             << util::fijo(ta, 3) << "," << rot << "\n";
     }
 
-    // Por que importa el pivote: QuickSort con pivote = primer elemento.
+    // Por qué importa el pivote: QuickSort con pivote = primer elemento.
     const size_t m = std::min<size_t>(20000, datos.size());
     vector<string> aleatM(datos.begin(), datos.begin() + static_cast<std::ptrdiff_t>(m));
     vector<string> ordM = aleatM;
@@ -514,9 +491,9 @@ static void experimentoCasos(const vector<string>& datos, const Config& cfg) {
     cout << "\n  Guardado en '" << cfg.carpetaSalida << "/casos_entrada.csv'\n";
 }
 
-// ===========================================================================
+
 // Programa principal
-// ===========================================================================
+
 static void imprimirEncabezado(const vector<string>& datos, const Config& cfg) {
     cout << linea('=') << "\n  ORDENAMIENTO DE UN DATASET GRANDE - QuickSort / HeapSort / AVL\n"
          << linea('=') << "\n";
