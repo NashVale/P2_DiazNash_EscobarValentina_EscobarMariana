@@ -45,7 +45,10 @@ g++ -std=c++17 -O2 -o pruebas tests/pruebas.cpp src/memoria.cpp
 g++ -std=c++17 -O2 -o generar_dataset tools/generar_dataset.cpp
 ./generar_dataset words_alpha.txt data/dataset.txt 100000 2026
 ```
+## NOTA: En Windows con MinGW hay que agregar -static:
 
+g++ -std=c++17 -O2 -static -o ordenador src/main.cpp src/memoria.cpp
+g++ -std=c++17 -O2 -static -o pruebas tests/pruebas.cpp src/memoria.cpp
 ## Resultados
 
 n = 100.000, media de 5 repeticiones:
