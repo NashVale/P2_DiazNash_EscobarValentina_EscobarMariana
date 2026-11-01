@@ -89,7 +89,6 @@ inline Resumen resumir(const std::vector<double>& xs) {
     return r;
 }
 
-}
 inline std::size_t capacidadSSO() { return std::string().capacity(); }
 
 inline std::size_t bytesTextoExterno(const std::vector<std::string>& v) {
