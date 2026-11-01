@@ -1,18 +1,5 @@
 // pruebas.cpp
-// ---------------------------------------------------------------------------
-// Pruebas automaticas de los tres algoritmos (y la variante in situ).
-//
-// 1. Casos limite fijos: vacio, 1 elemento, 2 elementos, todos iguales,
-//    ya ordenado, orden inverso, palabras con prefijos comunes, mayusculas.
-// 2. Pruebas aleatorias: miles de arreglos pequenos con muchas repeticiones,
-//    comparados contra un ordenamiento por insercion (simple y obviamente
-//    correcto) escrito aqui mismo.
-// 3. Validacion de la estructura: propiedad de heap y propiedades AVL.
-//
-// Compilar y correr (desde la carpeta del proyecto):
-//   g++ -std=c++17 -O2 -o pruebas tests/pruebas.cpp src/memoria.cpp
-//   ./pruebas
-// ---------------------------------------------------------------------------
+
 #include <cstdint>
 #include <iostream>
 #include <random>
@@ -38,7 +25,7 @@ static void comprobar(bool ok, const string& que) {
     }
 }
 
-// Referencia: ordenamiento por insercion O(n^2), facil de verificar a mano.
+// Referencia: ordenamiento por insercion O(n^2)
 static vector<string> referencia(vector<string> v) {
     for (std::size_t i = 1; i < v.size(); ++i) {
         string x = v[i];
@@ -57,7 +44,7 @@ static void probarTodos(const vector<string>& entrada, const string& nombre) {
     { vector<string> v = entrada; EstadisticasQuick e;
       quick::ordenar(v, e, quick::Pivote::Primero);
       comprobar(v == esperado, "QuickSort (pivote primero): " + nombre);
-      // La profundidad de recursion nunca debe pasar de log2(n) + 1.
+      
       int cota = 1; for (std::size_t n = v.size(); n > 1; n /= 2) ++cota;
       comprobar(e.profundidadMaxima <= cota + 1, "Profundidad QuickSort acotada: " + nombre); }
     { EstadisticasHeap e; vector<string> s = heap::ordenar(entrada, e);
@@ -123,8 +110,8 @@ int main() {
     }
 
     // Todo lo reservado por las pruebas debe haberse liberado (sin fugas).
-    // (Se evalua antes de llamar a comprobar(): el texto del mensaje es un
-    //  std::string largo que tambien reserva memoria.)
+    // (Se evalúa antes de llamar a comprobar(): el texto del mensaje es un
+    //  std::string largo que tambien reserva momoria.)
     const bool sinFugas = memoria::actual() == memInicial;
     comprobar(sinFugas, "sin fugas de memoria (new/delete balanceados)");
 
