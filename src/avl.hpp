@@ -147,14 +147,5 @@ private:
         delete n;
     }
 
-    static int validar(const Nodo* n, const std::string* min,
-                       const std::string* max, bool& ok) {
-        if (n == nullptr) return 0;
-        if ((min && !(*min < n->clave)) || (max && !(n->clave < *max))) ok = false;
-        const int hi = validar(n->izq, min, &n->clave, ok);
-        const int hd = validar(n->der, &n->clave, max, ok);
-        if (hi - hd > 1 || hd - hi > 1) ok = false;
-        if (n->altura != 1 + std::max(hi, hd)) ok = false;
-        return 1 + std::max(hi, hd);
-    }
+
 };
