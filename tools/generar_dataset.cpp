@@ -1,1 +1,74 @@
+// generar_dataset.cpp
+// ---------------------------------------------------------------------------
+// Crea dataset.txt con N palabras elegidas al azar de words_alpha.txt.
+//
+// words_alpha.txt viene ordenado alfabeticamente; si lo usaramos tal cual,
+// todos los algoritmos recibirian su "mejor/peor caso" en lugar de un caso
+// tipico. Por eso se toma una muestra aleatoria y se desordena.
+//
+// Algoritmo: Fisher-Yates PARCIAL. Para i = 0..N-1 se elige j al azar en
+// [i, total) y se intercambian palabras[i] y palabras[j]. Las primeras N
+// posiciones quedan como una muestra aleatoria uniforme y sin repeticiones.
+// Costo O(total) para leer + O(N) para mezclar.
+//
+// Se usa std::mt19937 con SEMILLA FIJA y una funcion propia para el numero
+// aleatorio en un rango (std::uniform_int_distribution puede dar resultados
+// distintos en cada compilador). Asi, misma semilla => mismo dataset en
+// Windows, Linux o macOS: el experimento es reproducible.
+//
+// Uso:
+//   generar_dataset words_alpha.txt data/dataset.txt [N=100000] [semilla=2026]
+// ---------------------------------------------------------------------------
+#include <cstdint>
+#include <fstream>
+#include <iostream>
+#include <random>
+#include <string>
+#include <utility>
+#include <vector>
 
+// Entero uniforme en [0, limite) sin sesgo (rechazo).
+static std::uint64_t enteroUniforme(std::mt19937_64& gen, std::uint64_t limite) {
+    const std::uint64_t maximo = UINT64_MAX - (UINT64_MAX % limite);
+    std::uint64_t x;
+    do { x = gen(); } while (x >= maximo);
+    return x % limite;
+}
+
+int main(int argc, char* argv[]) {
+    if (argc < 3) {
+        std::cerr << "Uso: " << argv[0] << " words_alpha.txt dataset.txt [N] [semilla]\n";
+        return 1;
+    }
+    const std::string entrada = argv[1], salida = argv[2];
+    const std::size_t n = argc > 3 ? std::stoull(argv[3]) : 100000;
+    const std::uint64_t semilla = argc > 4 ? std::stoull(argv[4]) : 2026;
+
+    std::ifstream in(entrada);
+    if (!in) { std::cerr << "No se pudo abrir " << entrada << "\n"; return 1; }
+    std::vector<std::string> palabras;
+    std::string linea;
+    while (std::getline(in, linea)) {
+        while (!linea.empty() && (linea.back() == '\r' || linea.back() == ' ')) linea.pop_back();
+        if (!linea.empty()) palabras.push_back(linea);
+    }
+    if (palabras.size() < n) {
+        std::cerr << "El archivo solo tiene " << palabras.size() << " palabras\n";
+        return 1;
+    }
+
+    std::mt19937_64 gen(semilla);
+    for (std::size_t i = 0; i < n; ++i) {
+        const std::size_t j = i + enteroUniforme(gen, palabras.size() - i);
+        std::swap(palabras[i], palabras[j]);
+    }
+
+    std::ofstream out(salida);
+    if (!out) { std::cerr << "No se pudo escribir " << salida << "\n"; return 1; }
+    for (std::size_t i = 0; i < n; ++i) out << palabras[i] << '\n';
+
+    std::cout << "Leidas " << palabras.size() << " palabras de " << entrada << "\n"
+              << "Escritas " << n << " palabras aleatorias en " << salida
+              << " (semilla " << semilla << ")\n";
+    return 0;
+}
